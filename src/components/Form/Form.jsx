@@ -118,6 +118,7 @@ const Form = () => {
       setTotalAmount(total);
     }
   };
+  useEffect(calculateTotalAmount, [pricePerKgOrTon, packages, units])
 
   const handlePriceChange = (event) => {
     setPricePerKgOrTon(event.target.value);
@@ -213,10 +214,20 @@ const Form = () => {
                   >
                     <IconButton color="primary">
                       <AddPhotoAlternateIcon sx={{ fontSize: 40 }} />
-                    </IconButton>
+                    </IconButton>                    
+                    {isUploading ? (
+                      <>
+                        <Typography variant="body2" color="text.secondary" sx={{margin: '10px auto 6px'}}>
+                          Uploading....
+                        </Typography>
+                        <Box sx={{ width: 120, textAlign: 'center' }}>
+                          <LinearProgress variant="determinate" value={progress} />
+                        </Box>
+                      </>
+                    ):
                     <Typography variant="body2" color="text.secondary">
                       Upload Image
-                    </Typography>
+                    </Typography>}
                   </CardContent>
                 )}
               {selectedImage && !isUploading && (
@@ -237,11 +248,6 @@ const Form = () => {
                 >
                   <CloseIcon fontSize="5px" />
                 </IconButton>
-              )}
-              {isUploading && (
-                <Box sx={{ width: 150, margin: '20px auto', textAlign: 'center', position: 'absolute', bottom: '10px' }}>
-                  <LinearProgress variant="determinate" value={progress} />
-                </Box>
               )}
               </UploadCard>
 				{/* <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -290,7 +296,7 @@ const Form = () => {
             
             <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
               <TextField
-                label="Pricing"
+                label="Pricing per Kg"
                 variant="outlined"
                 type="number"
                 sx={{ flex: 1, marginRight: 1 }}
@@ -298,7 +304,6 @@ const Form = () => {
                 onChange={handlePriceChange}
                 required
               />
-              <Typography variant="h6">/</Typography>
               <FormControl sx={{ flex: 1, marginLeft: 1 }}>
                 <InputLabel>Units</InputLabel>
                 <Select
@@ -443,11 +448,11 @@ const Form = () => {
               </IconButton>
             </Box>
             {/* Calculated Total */}
-            <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
-              <Typography variant="h6" sx={{ flex: 1 }}>
+            <Box sx={{ display: 'flex', alignItems: 'end', flexDirection: 'column', fontSize: '16px'}}>
+              <Typography sx={{ flex: 1, fontWeight: 'bold' }}>
                 Total Amount: 
               </Typography>
-              <Typography variant="h6" sx={{ flex: 1 }}>
+              <Typography sx={{ flex: 1 }}>
                 {totalAmount} Rs
               </Typography>
             </Box>
